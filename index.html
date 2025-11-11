@@ -1,0 +1,280 @@
+<!--
+  🌐 Project: Personal Web - Xshh Checklist
+  🔧 Created by: Xshh
+  📅 Year: 2025
+  📝 License: MIT
+  📁 GitHub: https://github.com/xshh/thatsme
+-->
+
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xshh - Checklist</title>
+  <meta property="og:title" content="Xshh - Checklist" />
+  <meta property="og:description" content="Personal checklist by Xshh." />
+  <meta property="og:image" content="https://files.catbox.moe/7x1rs0.png" />
+  <meta property="og:url" content="https://github.com/aloysiussandyhermawan-pixel" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Xshh - Checklist" />
+  <meta name="twitter:description" content="Stay organized with Xshh's checklist." />
+  <meta name="twitter:image" content="https://files.catbox.moe/7x1rs0.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Poppins', sans-serif; }
+    :root { --primary-color: #0F0F0F; --secondary-color: #9B59B6; }
+
+    .banner {
+      height: 200px;
+      background-image: url('https://files.catbox.moe/hsi6dw.gif');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .link-card {
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .link-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+    .link-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%;
+      background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    }
+
+    .menu-toggle { position: absolute; top: 1rem; right: 1rem; z-index: 10; color: white; cursor: pointer; }
+    .badge, .shiny-badge { border-radius: 9999px; padding: 3px 12px; font-size: 12px; font-weight: 600; }
+    .shiny-badge { position: relative; overflow: hidden; background-color: #f1f5f9; color: #334155; }
+    .dark .shiny-badge { background-color: #1e293b; color: #e2e8f0; }
+    .shiny-badge::before {
+      content: ""; position: absolute; top: 0; left: -75%; width: 150%; height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+      animation: shine 2.5s infinite; z-index: 1;
+    }
+    .shiny-badge > * { position: relative; z-index: 2; }
+    @keyframes shine { 0% { left: -75%; } 100% { left: 100%; } }
+
+    .dropdown { position: absolute; top: 3rem; right: 1rem; background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 30; }
+    .dark .dropdown { background-color: #1e293b; color: white; }
+    .dropdown-item { padding: 0.5rem 1rem; cursor: pointer; }
+    .dropdown-item:hover { background-color: #f3f4f6; }
+    .dark .dropdown-item:hover { background-color: #334155; }
+
+    @keyframes crown-glow {
+      0% { filter: drop-shadow(0 0 3px #facc15); opacity: 1; }
+      50% { filter: drop-shadow(0 0 6px #fde68a); opacity: 0.7; }
+      100% { filter: drop-shadow(0 0 3px #facc15); opacity: 1; }
+    }
+    .glow-crown { animation: crown-glow 1.5s infinite ease-in-out; }
+
+    .music-player {
+      display: flex; align-items: center; gap: 15px;
+      width: 100%; background-color: white; padding: 12px;
+      border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .dark .music-player { background-color: #1e293b; }
+    .cover-image { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; }
+    .cover-image img { width: 100%; height: 100%; object-fit: cover; }
+    .music-title { font-weight: 600; color: #333; }
+    .dark .music-title { color: #f1f5f9; }
+    .play-button { cursor: pointer; border: none; background: transparent; font-size: 1.25rem; }
+  </style>
+</head>
+
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
+  <div class="banner relative">
+    <div class="menu-toggle" onclick="toggleDropdown()"><i class="fas fa-ellipsis-v text-white text-xl"></i></div>
+    <div id="theme-menu" class="dropdown hidden">
+      <div class="dropdown-item flex items-center gap-2" onclick="setTheme('light')"><i class="fas fa-sun"></i> Light</div>
+      <div class="dropdown-item flex items-center gap-2" onclick="setTheme('dark')"><i class="fas fa-moon"></i> Dark</div>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="flex justify-center relative -mt-16 z-20">
+    <div class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-800 relative">
+      <img src="https://files.catbox.moe/7x1rs0.png" alt="Profile" class="w-full h-full object-cover rounded-full" />
+      <i class="fas fa-crown text-yellow-400 text-xl absolute -top-2 right-2 rotate-[25deg] glow-crown"></i>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 pt-6 pb-8 max-w-md">
+    <div class="text-center mb-8">
+      <h2 class="text-xl font-bold mb-1 flex items-center justify-center gap-1">
+        Xshh (Aloysius Sandy H.O)
+        <i class="fas fa-circle-check text-blue-500 text-base" title="Verified"></i>
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Complete the Checklist and Chilling</p>
+
+      <!-- Birthday -->
+      <div class="flex flex-wrap gap-2 justify-center mt-2" id="user-tags">
+        <span class="badge bg-indigo-600 text-white text-sm px-3 py-1 rounded-full flex items-center gap-1">
+          <i class="fas fa-calendar-day"></i>
+          <span id="birthday-countdown-text">Loading...</span>
+        </span>
+      </div>
+
+      <!-- Shiny badges -->
+      <div class="flex justify-center mt-3 gap-2 flex-wrap">
+        <span class="badge shiny-badge"><i class="fas fa-check text-green-500"></i> Organized</span>
+        <span class="badge shiny-badge"><i class="fas fa-clock text-indigo-500"></i> Focus Frame</span>
+        <span class="badge shiny-badge"><i class="fas fa-heart text-pink-500"></i> Self Care</span>
+      </div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player mb-8">
+      <div class="cover-image"><img src="https://files.catbox.moe/lcm89p.webp" alt="Cover Image"></div>
+      <div class="player-controls flex-1">
+        <audio id="audio-player" src="https://files.catbox.moe/33k8lo.mp3"></audio>
+        <div class="music-title">homesick - wave to earth</div>
+        <div class="flex items-center w-full mt-2">
+          <button class="play-button" onclick="togglePlay()"><i class="fas fa-play"></i></button>
+          <div class="flex-1 px-3">
+            <div class="progress-container cursor-pointer h-2 bg-gray-200 rounded" onclick="seek(event)">
+              <div class="progress-bar h-full bg-indigo-500 rounded w-0"></div>
+            </div>
+            <div class="flex justify-between text-xs mt-1">
+              <span id="current-time">0:00</span>
+              <span id="duration">5:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📝 Add Task Block -->
+    <div class="mb-6">
+      <h2 class="text-lg font-bold mb-2">Add New Task</h2>
+      <form id="task-form" class="flex flex-col gap-2">
+        <input type="text" id="task-name" placeholder="Task Name" class="p-2 border rounded dark:bg-gray-800">
+        <input type="date" id="task-deadline" class="p-2 border rounded dark:bg-gray-800">
+        <button type="submit" class="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Add Task</button>
+      </form>
+    </div>
+
+    <!-- Checklist -->
+    <div class="space-y-4 mb-8" id="checklist-container">
+      <div class="link-card bg-white dark:bg-gray-800 p-5 flex items-center gap-4">
+        <input type="checkbox" class="w-5 h-5 accent-indigo-500">
+        <div>
+          <h3 class="font-semibold">Finish project task</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Deadline: 2025-11-10</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center text-gray-500 text-xs">
+      <p>© 2025 My Checklist. All rights reserved.</p>
+      <p class="mt-1">Made with ❤️ by Xshh</p>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    const themeMenu = document.getElementById('theme-menu');
+    function toggleDropdown(){ themeMenu.classList.toggle('hidden'); }
+    function setTheme(mode){ const html=document.documentElement; mode==='dark'?html.classList.add('dark'):html.classList.remove('dark'); localStorage.setItem('theme',mode); themeMenu.classList.add('hidden'); }
+    if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');
+
+    // Music Player
+    const audio=document.getElementById("audio-player"); const playButton=document.querySelector(".play-button i"); const progressBar=document.querySelector(".progress-bar"); const currentTimeEl=document.getElementById("current-time"); const durationEl=document.getElementById("duration");
+    function togglePlay(){ if(audio.paused){audio.play(); playButton.classList.replace("fa-play","fa-pause");} else{audio.pause(); playButton.classList.replace("fa-pause","fa-play");}}
+    audio.addEventListener("timeupdate",()=>{const progress=(audio.currentTime/audio.duration)*100;progressBar.style.width=`${progress}%`;currentTimeEl.textContent=formatTime(audio.currentTime);durationEl.textContent=formatTime(audio.duration);});
+    function seek(e){const rect=e.currentTarget.getBoundingClientRect();audio.currentTime=((e.clientX-rect.left)/rect.width)*audio.duration;}
+    function formatTime(s){const m=Math.floor(s/60)||0,sec=Math.floor(s%60)||0;return `${m}:${sec<10?"0":""}${sec}`;}
+
+    // Birthday countdown
+    function updateBirthdayCountdown(){const today=new Date();const birthday=new Date("2025-11-24");birthday.setHours(0,0,0,0);today.setHours(0,0,0,0);const diff=birthday-today;const daysLeft=Math.ceil(diff/(1000*60*60*24));const el=document.getElementById("birthday-countdown-text");if(daysLeft>0)el.textContent=`${daysLeft} Days to Birthday`;else if(daysLeft===0)el.textContent=`🎂 Today is your Birthday!`;else el.textContent=`🎉 Birthday Passed`;}
+    updateBirthdayCountdown();
+
+    // Add Task Function
+    const form = document.getElementById('task-form');
+const taskNameInput = document.getElementById('task-name');
+const taskDeadlineInput = document.getElementById('task-deadline');
+const checklistContainer = document.getElementById('checklist-container');
+
+// Load saved tasks (optional)
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+renderTasks();
+
+// Handle new task
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const name = taskNameInput.value.trim();
+  const deadline = taskDeadlineInput.value;
+  if (!name) return;
+
+  const task = {
+    id: Date.now(),
+    name,
+    deadline,
+    completed: false,
+  };
+  tasks.push(task);
+  saveTasks();
+  renderTasks();
+
+  taskNameInput.value = '';
+  taskDeadlineInput.value = '';
+});
+
+// Render tasks
+function renderTasks() {
+  checklistContainer.innerHTML = '';
+  tasks.forEach(task => {
+    const taskCard = document.createElement('div');
+    taskCard.className =
+      'link-card bg-white dark:bg-gray-800 p-4 flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition';
+
+    taskCard.innerHTML = `
+      <div class="flex items-center gap-3">
+        <input type="checkbox" class="w-5 h-5 accent-indigo-500" ${task.completed ? 'checked' : ''}>
+        <div>
+          <h3 class="font-semibold ${task.completed ? 'line-through opacity-60' : ''}">${task.name}</h3>
+          ${task.deadline ? `<p class="text-sm text-gray-500 dark:text-gray-400">Deadline: ${task.deadline}</p>` : ''}
+        </div>
+      </div>
+      <button class="delete-task text-red-500 hover:text-red-600 text-lg">
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    `;
+
+    // Checkbox toggle
+    const checkbox = taskCard.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener('change', () => {
+      task.completed = checkbox.checked;
+      saveTasks();
+      renderTasks();
+    });
+
+    // Delete button
+    const deleteBtn = taskCard.querySelector('.delete-task');
+    deleteBtn.addEventListener('click', () => {
+      tasks = tasks.filter(t => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    checklistContainer.appendChild(taskCard);
+  });
+}
+
+// Save to localStorage
+function saveTasks() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+  </script>
+</body>
+</html>
